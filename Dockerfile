@@ -5,9 +5,11 @@ RUN apt-get update -qq \
     && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 RUN curl -fsS https://dlang.org/install.sh | bash -s dmd
+RUN update-alternatives --install "/usr/bin/ld" "ld" "/usr/bin/ld.gold" 20 \
+    && update-alternatives --install "/usr/bin/ld" "ld" "/usr/bin/ld.bfd" 10
 
 WORKDIR /root/
-RUN git clone -b v2.3.11 https://github.com/abraunegg/onedrive.git \
+RUN git clone https://github.com/abraunegg/onedrive.git \
     && . ~/dlang/dmd-*/activate \
     && cd onedrive \
     && ./configure --enable-notifications --enable-completions \
